@@ -1,0 +1,34 @@
+<configure                                                                     
+    xmlns="http://namespaces.zope.org/zope"                                    
+    xmlns:browser="http://namespaces.zope.org/browser"                         
+    i18n_domain="atvocabularymanager">      
+
+
+<browser:pages                                                             
+      for="Products.ATVocabularyManager.interfaces.ISortedSimpleVocabulary"
+      permission="zope2.View">
+    <browser:page                                                              
+        name="base_view"                                                                                             
+        template="./templates/simplevocabulary_view.pt" />
+</browser:pages>
+
+<browser:pages                                                             
+      for="Products.ATVocabularyManager.interfaces.ISimpleVocabulary"
+      class=".views.simplevocabulary.SimpleVocabularyView"
+      permission="zope2.View">
+
+    <browser:page                                                              
+        name="base_view"                                                                                             
+        template="./templates/simplevocabulary_view.pt" />
+    <browser:page                                                              
+        name="saveVocab"                                                                                             
+        attribute="saveVocab" />
+    <browser:page                                                              
+        name="deleteTerm"                                                                                             
+        attribute="deleteTerm" />
+    <!--browser:page                                                              
+        name="saveTerm"                                                                                             
+        attribute="saveTerm" /-->
+</browser:pages>
+
+</configure>
