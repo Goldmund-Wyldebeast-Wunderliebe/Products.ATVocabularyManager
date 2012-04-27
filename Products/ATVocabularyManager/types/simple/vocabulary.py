@@ -31,19 +31,19 @@ except ImportError:
 from AccessControl import ClassSecurityInfo
 from Products.CMFCore.permissions import AddPortalContent
 from Products.CMFCore.utils import getToolByName
-from Products.Archetypes.interfaces import IVocabulary
 from Products.Archetypes.utils import make_uuid
 from Products.Archetypes.utils import DisplayList
 from Products.Archetypes.utils import OrderedDict
 
 from Products.ATVocabularyManager.tools import registerVocabularyContainer
+from Products.ATVocabularyManager.interfaces import ISimpleVocabulary 
 from Products.ATVocabularyManager.config import TOOL_NAME as VOCABTOOL_NAME
 from Products.ATVocabularyManager.config import PROJECTNAME
 
 
 class SimpleVocabulary(OrderedBaseFolder):
 
-    implements(IVocabulary)
+    implements(ISimpleVocabulary)
 
     security = ClassSecurityInfo()
     meta_type = 'SimpleVocabulary'

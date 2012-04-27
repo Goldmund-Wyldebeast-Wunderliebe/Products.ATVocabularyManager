@@ -6,6 +6,8 @@ ATVocabularyManager: a vocabulary managing portal tool for Plone
 
 Overview
 ========
+- This branch is a work-in-progres to use already available, but unused templates
+  and such in Plone 4. Enhanching them with browserviews and jquery ajax calls.
 
 - ATVocabularyManager offers central through the Plone management of
   dynamic vocabularies.

@@ -84,12 +84,11 @@
         <h2 i18n:translate="heading_defined_pairs">Currently defined Key/value pairs:</h2>
 
         <metal:listingmacro define-macro="listing">
-        <tal:foldercontents define="folderContents python:here.getFolderContents(suppressHiddenFiles=1)">
+        <tal:foldercontents define="folderContents python:here.getFolderContents()">
         <tal:listing condition="folderContents"
-                     define="global getObjSize nocall:here/getObjSize;
-                             global toPortalTime nocall:here/toPortalTime;">
+                     define="global getObjSize nocall:here/getObjSize;">
         <form name="vocab_terms" action="here/absolute_url" method="post">
-          <table tal:define="idx python:Iterator(pos=-1)" id="vocab_terms">
+          <table id="vocab_terms">
 	       <tbody> 
            <tal:entry tal:repeat="obj folderContents">
                  <tr>

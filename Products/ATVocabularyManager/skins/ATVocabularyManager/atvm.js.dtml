@@ -1,70 +1,90 @@
-var i=0;
-var newTerms = 0;
-var isChanged = 0;
-var ChangedElementsType = new Array(50);
-var ChangedElementsName = new Array(50);
-var ChangedElementsValue = new Array(50);
-var j = 0;
+var atvocabulary = {
+  i:0,
+  newTerms : 0,
+  isChanged : 0,
+  ChangedElementsType : new Array(50),
+  ChangedElementsName : new Array(50),
+  ChangedElementsValue : new Array(50),
+  j : 0,
 
-function addTerm()
-{
-    newTerms++;
-    var mytable=document.getElementById("vocab_terms");
-    var new_row=document.createElement("TR");
-	var new_cell=document.createElement("TD");
-	var newButton   = document.createElement("input");
-    newButton.type  = "text";
-    newButton.id  = "key"+newTerms;
-    newButton.name  = "key"+newTerms;
-    new_cell.appendChild(newButton);
-	new_row.appendChild(new_cell);
-	var new_cell2=document.createElement("TD");
-	var newButton2   = document.createElement("input");
-    newButton2.type  = "text";
-    newButton2.id  = "value"+newTerms;
-    newButton2.name  = "value"+newTerms;
-    new_cell2.appendChild(newButton2);
-	new_row.appendChild(new_cell2);
-    mytable.appendChild(new_row);
-}
+  addTerm: function (){
+      atvocabulary.newTerms++;
 
-function changeTerm(obj)
-{
-    if(obj.name!=obj.value)
-    {
-        isChanged = 1;
-        ChangedElementsType[i] = obj.id;
-        ChangedElementsName[i] = obj.name;
-        ChangedElementsValue[i++] = obj.value;
-        t = document.getElementById("debug1");
-        t.value = "New value: " + obj.value;
-    }
-}
+      var mytable=document.getElementById("vocab_terms");
+      var new_row=document.createElement("TR");
+      var new_cell=document.createElement("TD");
+      var newButton   = document.createElement("input");
+      newButton.type  = "text";
+      newButton.id  = "key"+atvocabulary.newTerms;
+      newButton.name  = "keys";
+      new_cell.appendChild(newButton);
+      new_row.appendChild(new_cell);
+      var new_cell2=document.createElement("TD");
+      var newButton2   = document.createElement("input");
+      newButton2.type  = "text";
+      newButton2.id  = "value"+atvocabulary.newTerms;
+      newButton2.name  = "values";
+      new_cell2.appendChild(newButton2);
+      new_row.appendChild(new_cell2);
+      mytable.appendChild(new_row);
+  },
+  saveTerm: function(id)
+  {
+      var url = document.getElementById("abs_url").value;      
+      key = jq(id).parent().parent().find("#key").attr('value'); 
+      value= jq(id).parent().parent().find("#value").attr('value'); 
+      jq.ajax({                                                                  
+          type: "POST",                                                          
+          url: url+ "/saveTerm",                                                
+          data: "key="+key+"&value="+value,
+          success: function(data){                                               
+  //          jq("#vocab_terms").load(location.href + " #vocab_terms");            
+          }    
+      });    
 
-function saveTerm()
-{
-    if(newTerms>0)
-    {
-        url = document.getElementById("abs_url").value;
-        server = XMLRPC.getService(url);
-        server.add('createChild','FcreateChild');
+  },
+  saveVocab: function(){
+      var url = document.getElementById("abs_url").value;
+      jq.ajax({                                                                                                                                                                
+          type: "POST",                                              
+          url: url+ "/saveVocab",                        
+          data: jq("form[name='vocab_terms']").serialize(),
+ //         success: function(data){
+//            jq("#vocab_terms").load(location.href + " #vocab_terms");
+//
+ //         }
+      });
+  },
+  deleteTerm: function(ob)
+  {
+      // parent == td , parent.parent == tr.
+      console.log(ob);
+      key = jq(ob).parent().parent().find("#key").attr('value');
+      var url = document.getElementById("abs_url").value;
+      jq.ajax({                                                                                                                                                                
+          type: "POST",                                                          
+          url: url + "/deleteTerm",                                                
+          data: "key="+key,
+          success: function(data){                                               
+              jq(ob).parent().parent().remove();                                                        
+          }                                                                      
+      });   
+      }
+};
+jq(document).ready(function() {      
+//  jq("form[name='vocabularyForm'] input[name='save']").click(function(e){
+//   e.preventDefault();         
+//   atvocabulary.saveVocab();
+//
+//    });
 
-        for(l=1;l<=newTerms;l++)
-        {
-            keystr = document.getElementById("key"+l).value;
-            valuestr = document.getElementById("value"+l).value;
-            //term_url = url + "/" + keystr;
-            server.FcreateChild(id=keystr, title=valuestr);
-        }
-    }
-}
+  jq("form[name='vocabularyForm'] input[name='new']").click(function(e){      
+    e.preventDefault();                                                        
+    atvocabulary.addTerm();                                                  
+  });  
+  jq("form[name='vocabularyForm'] input[name='delete']").click(function(e){      
+    e.preventDefault();                                                        
+    atvocabulary.deleteTerm(this);                                                  
+  });  
 
-function deleteTerm(id, i)
-{
-    var mytable=document.getElementById("vocab_terms");
-    mytable.deleteRow(i);
-    url = document.getElementById("abs_url").value;
-    server = XMLRPC.getService(url);
-    server.add('manage_delObjects','delObject');
-    result = server.delObject(id);
-}
+});

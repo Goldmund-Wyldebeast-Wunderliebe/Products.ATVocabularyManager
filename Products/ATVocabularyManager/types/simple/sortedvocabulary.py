@@ -26,17 +26,16 @@ else:
 
 from AccessControl import ClassSecurityInfo
 
-from Products.Archetypes.interfaces.vocabulary import IVocabulary
-
 from Products.ATVocabularyManager.tools import registerVocabularyContainer
 from Products.ATVocabularyManager.config import PROJECTNAME
+from Products.ATVocabularyManager.interfaces import ISortedSimpleVocabulary  
 from Products.ATVocabularyManager.types.simple.vocabulary import SimpleVocabulary
 
 
 class SortedSimpleVocabulary(SimpleVocabulary):
     security = ClassSecurityInfo()
 
-    __implements__ = getattr(OrderedBaseFolder, '__implements__', ()) + (IVocabulary, )
+    __implements__ = getattr(OrderedBaseFolder, '__implements__', ()) + (ISortedSimpleVocabulary, )
 
 
     # This name appears in the 'add' box

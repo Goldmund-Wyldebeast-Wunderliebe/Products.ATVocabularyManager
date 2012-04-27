@@ -1,6 +1,12 @@
 from zope import interface
 from zope import schema
+from Products.Archetypes.interfaces import IVocabulary     
 
+class ISimpleVocabulary(IVocabulary):                                          
+    """Interface for simple vocabulary"""  
+
+class ISortedSimpleVocabulary(IVocabulary):                                          
+    """Interface for simple vocabulary"""  
 
 class IATVocabularyLibrary(interface.Interface):
     """ Interface for the tool """
